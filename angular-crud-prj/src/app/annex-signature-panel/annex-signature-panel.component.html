@@ -1,0 +1,131 @@
+<h2 class="text-center">Signature Panel</h2>
+<div class="centered">
+<form (ngSubmit) = "onSubmit()">
+  <table >
+      <tr>
+          <td>
+              <div class="form-group">
+                <label for="fileName" > File Name</label>
+                  <input type="text" class="form-control" id="statementNo" [(ngModel)]="annexFile.fileName" name="fileName">
+               </div>
+          </td>
+
+          
+
+      </tr>
+      <tr>
+        <td>
+          <div class="form-group">
+              <label for="description"> Description</label>
+              <textarea  class="form-control" [(ngModel)]="annexFile.description"  value={{annexFile.description}} 
+              name="description" ></textarea>
+            </div>
+      </td>
+
+      </tr>
+      <tr>
+        <td>
+        <div class="form-group">
+          <label for="officier"> Officier</label> 
+          <canvas
+          #canvasOfficial
+          [(ngModel)]="annexFile.officierSignature"
+          (touchstart)="startDrawing($event)"
+          (touchmove)="moved($event)"
+          width="700"
+          height="100"></canvas>
+        <p class="error-message" *ngIf="signatureOfficalNeeded">Signature is required</p>
+        </div>
+      </td>
+      <td>
+        <div class="buttons flex justify-between">
+          <button  class="btn btn-success "  (click)="clearPadOfficial()">Clear</button>
+        </div>
+
+      </td>
+
+
+      </tr>
+      <tr>
+        <td>
+          <img src={{annexFile.officierSignature}} />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+        <div class="form-group">
+          <label for="witness"> Offender / Witness</label> 
+          <canvas
+          #canvasWitness
+          (touchstart)="startDrawing($event)"
+          (touchmove)="moved($event)"
+          
+          width="700"
+          height="100"></canvas>
+        <p class="error-message" *ngIf="signatureWitnessNeeded">Signature is required</p>
+        </div>
+      </td>
+      <td>
+        <div class="buttons flex justify-between">
+          <button  class="btn btn-success "  (click)="clearPadWitness()">Clear</button>
+        </div>
+
+      </td>
+      </tr>
+      <tr>
+        <td>
+          <img src={{annexFile.witnessSignature}} />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+        <div class="form-group">
+          <label for="interpreter"> Interpreter</label> 
+          <canvas
+          #canvasInterpreter
+          (touchstart)="startDrawing($event)"
+          (touchmove)="moved($event)"
+          width="700"
+          height="100"></canvas>
+        <p class="error-message" *ngIf="signatureWitnessNeeded">Signature is required</p>
+        </div>
+      </td>
+      <td>
+        <div class="buttons flex justify-between">
+          <button class="btn btn-success " (click)="clearPadInterpreter()">Clear</button>
+        </div>
+
+      </td>
+      </tr>
+      <tr>
+        <td>
+          <img src={{annexFile.interpreterSignature}} />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button class="btn btn-success " type="submit">Insert Signature</button>
+          <button class="btn btn-success " (click)="cancelSignature()">Cancel</button> &nbsp;
+        </td>
+      </tr>
+
+     
+  
+  </table>
+</form>
+</div>
+
+<!--
+<div class="buttons flex justify-between">
+  <button (click)="clearPad()">Clear</button>
+  <button (click)="savePad()">Submit the signature</button>
+</div>
+
+<h2>it is  official</h2>
+<div *ngIf="signatureWitnessNeeded === false">
+  <p>Signature in Base64Encoded Format</p>
+  <img src="{{ signatureImgWitness }}" alt="" srcset="" />
+</div>
+-->

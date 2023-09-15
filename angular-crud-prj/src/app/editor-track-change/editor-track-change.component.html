@@ -1,0 +1,43 @@
+<main>
+	<div class="message">
+		<div class="centered">
+			<h1>CKEditor 5 - Digital Signature </h1>
+		</div>
+	</div> 
+	<div class="centered">
+		<div class='row row-editor'>
+			<ckeditor [editor]="Editor" (ready)="onReady($event)" 
+           [config]="editorConfig"
+           [data]="data"></ckeditor>
+			<div #sidebar class='sidebar'></div> 
+		</div>
+		<!--
+		<div class="row row-info">
+			Your license key is stored in the local storage.
+			<button class="remove-license-key" (click)="resetLicenseKey()">Reset license key</button>
+		</div> -->
+		<!--<div style="margin-left: 39%;">
+			<canvas #signPadCanvas (touchstart)="startSignPadDrawing($event)" (touchmove)="movedFinger($event)"></canvas>
+		</div>
+		<div>
+			<img src='{{ signImage }}' />
+		  </div>-->
+		   
+	</div>
+	<div style="text-align: center;margin-top:30px;">
+		<h3 style="font-family: monospace;">Signature Pad Example</h3>
+		<div style="margin-left: 39%;">
+		  <canvas #signPadCanvas (touchstart)="startSignPadDrawing($event)" (touchmove)="movedFinger($event)"></canvas>
+		</div>
+		<button class="btn btn-success" color="secondary" (click)="saveSignPad()">Save</button>
+		<button class="btn btn-danger" (click)="clearSignPad()">Clear</button>
+		<button class="btn btn-warning" (click)="undoSign()">Undo</button>
+		
+		<div>
+		  <span style="font-family: monospace;">Write the signature and click on Save</span>
+		  <div>
+			<img src='{{ signImage }}' />
+		  </div>
+		</div>
+	 </div>
+</main>

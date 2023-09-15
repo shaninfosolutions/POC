@@ -1,0 +1,26 @@
+<header>
+    <nav class ="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-brand">POC</div>
+    
+    <ul class="navbar-nav">
+     
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/" class="nav-link">View Users</a></li>
+     <!--<li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/addemployee" class="nav-link">Add New Employee</a></li>
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/viewemployee" class="nav-link">View Employees</a></li> -->
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/adduser" class="nav-link">Add New User</a></li>
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/viewstatement" class="nav-link">View Statement</a></li>
+     <!--editor-track-change-->
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/editor-track-change" class="nav-link">Editor</a></li>
+     
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/revision-history" class="nav-link">Revision Changed</a></li>
+     
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/viewrevision" class="nav-link">View Revision</a></li>
+     <!--<li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/annexfileaddsignature" class="nav-link">Annex Add Signature</a></li>
+     -->
+     <li><a *ngIf="!loginService.isUserLoggedIn()" routerLink="/login" class="nav-link">Login</a></li>
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/logout" class="nav-link">LogOut</a></li>
+    </ul>
+    
+    </nav>
+    
+    </header>

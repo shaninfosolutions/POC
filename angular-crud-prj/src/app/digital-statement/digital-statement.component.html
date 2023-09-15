@@ -1,0 +1,52 @@
+<h2 class="text-center">Proceed To Signing : Statement PDF</h2>
+<div class="col-md-10">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>File Name</th>
+      <th>File Path</th>
+      <th>Version No</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let statementPdf of statementPdfs">
+            <td>{{statementPdf.fileName}}</td>
+            <td>{{statementPdf.filePath}}</td>
+           <td>{{statementPdf.fileVerNo}}</td>
+            <td>
+                <button class="btn btn-danger" (click)="deleteStatementPdf(statementPdf.id)"> Delete</button> &nbsp;
+                <button class="btn btn-success" (click)="signStatement(statementPdf.id)"> Sign PDF</button> &nbsp;
+                <button class="btn btn-success" (click)="createDigitalStatement(statementPdf.id)"> Create Digital Statement</button> &nbsp;
+                <button class="btn btn-success" (click)="downloadStatementPdf(statementPdf.id)"> Download</button>
+            </td>
+            </tr>
+            
+    </tbody>
+ </table>
+</div>
+
+
+<h2 class="text-center">Digital Statement PDF</h2>
+<div class="col-md-10">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>File Name</th>
+      <th>File Path</th>
+      <th>Version No</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let digitalStatementPdf of digitalStatementPdfs">
+            <td>{{digitalStatementPdf.fileName}}</td>
+            <td>{{digitalStatementPdf.filePath}}</td>
+           <td>{{digitalStatementPdf.fileVerNo}}</td>
+            <td>
+                <button class="btn btn-danger" (click)="deleteDigitalStatement(digitalStatementPdf.id)"> Delete</button> &nbsp;
+                 <button class="btn btn-success" (click)="downloadDigitalPdf(digitalStatementPdf.id)"> Download</button>
+            </td>
+            </tr>
+            
+    </tbody>
+ </table>
+</div>

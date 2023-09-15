@@ -1,0 +1,33 @@
+<div class="col-md-10">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Statement No</th>
+      <th>Case File No</th>
+      <th>LO-InCharged</th>
+      <th>Offender</th>
+      <th>Stage</th>
+      <th>Creation Date</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let c2isStatement of c2isStatements">
+            <td>{{c2isStatement.statementNo}}</td>
+            <td>{{c2isStatement.caseFileNo}}</td>
+           <td>{{c2isStatement.personInCharge}}</td>
+            <td>{{c2isStatement.offender}}</td>
+            <td>{{c2isStatement.stage}}</td>
+            <td>{{c2isStatement.createdDt | date:'dd-MMM-yyyy HH:mm:ss'}}</td>
+            <td><button class="btn btn-danger" (click)="deleteStatement(c2isStatement)"> Delete</button> &nbsp;
+                <button class="btn btn-success" (click)="updateStatement(c2isStatement.id)"> Update</button></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <button class="btn btn-success" (click)="createStatement()"> Create Digital Statement</button>
+                </td>
+            </tr>
+    </tbody>
+ </table>
+  
+    </div>

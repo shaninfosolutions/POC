@@ -1,0 +1,22 @@
+<div class="col-md-6">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>User ID</th>
+      <th>Name</th>
+      <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let c2isuser of c2isusers">
+            <td>{{c2isuser.userId}}</td>
+            <td>{{c2isuser.name}}</td>
+           <td>{{c2isuser.avatar}}</td>
+            <td>{{c2isuser.role}}</td>
+            <td><button class="btn btn-danger" (click)="deleteUser(c2isuser)"> Delete User</button></td>
+            
+            </tr>
+    </tbody>
+      </table>
+  
+    </div>

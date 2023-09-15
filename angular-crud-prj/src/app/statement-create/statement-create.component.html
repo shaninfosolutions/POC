@@ -1,0 +1,89 @@
+<div class="container">
+    <h2 class="text-center">Create Digital Statement</h2>
+    <form (ngSubmit) = "onSubmit()">
+    <table table-striped>
+        <tr>
+            <td>
+                <div class="form-group">
+                    <label for="statementNo"> Statement No</label>
+                    <input type="text" class="form-control" id="statementNo" [(ngModel)]="c2isStatement.statementNo" name="statementNo">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="caseFileNo"> Case File No</label>
+                     <input type="text" class="form-control" id="caseFileNo" [(ngModel)]="c2isStatement.caseFileNo" name="caseFileNo">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="personInCharge"> LO-InCharged</label>
+                     <input type="text" class="form-control" id="personInCharge" [(ngModel)]="c2isStatement.personInCharge" name="personInCharge">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="offender"> Offender</label>
+                     <input type="text" class="form-control" id="offender" [(ngModel)]="c2isStatement.offender" name="offender">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                <label for="stage"> Stage</label>
+                 <input type="text" class="form-control" id="stage" [(ngModel)]="c2isStatement.stage" name="stage" disabled="true">
+                </div>    
+            </td>
+            <!--<td>
+                <div class="form-group">
+                    <label for="stage"> Creation Date</label>
+                    <input type="text" class="form-control" id="createdDt"   disabled="true">
+                       
+                </div>   
+            </td> -->
+        </tr>
+        
+        <tr>
+            <td colspan="5">
+                <button class="btn btn-success " type="submit">Save as Draft</button> &nbsp;
+                <button class="btn btn-success " (click)="startRecording()">Start Recording</button>
+                
+                
+            </td>
+        </tr>  
+        <!--
+        <tr>
+            <td colspan="5">
+                <table table-striped>
+                    <div class="message">
+                        <div class="centered">
+                            <h1>CK Editor</h1>
+                        </div>
+                    </div>
+                    <div class="centered">
+                        <div class='row row-editor'>
+                            <div class="form-group">
+                            <ckeditor [editor]="Editor" (ready)="onReady($event)" 
+                            id="content" 
+                            [config]="editorConfig"
+                            name="data"
+                            [(ngModel)]="c2isStatement.content"
+                            [data]="data"></ckeditor>
+                            <div #sidebar class='sidebar'></div> 
+                             </div>
+                        </div>
+                    </div>
+            
+                </table>
+            </td>
+        </tr> --> 
+                
+            
+
+    </table>
+
+   
+    
+	
+    
+</form>
+</div>

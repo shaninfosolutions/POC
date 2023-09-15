@@ -1,0 +1,126 @@
+<!--<div class="container"> -->
+    <h2 class="text-center">Update Digital Statement</h2>
+    <form (ngSubmit) = "onSubmit()">
+    <table >
+        <tr>
+            <td>
+                <div class="form-group">
+                    <label for="statementNo"> Statement No</label>
+                    <input type="text" class="form-control" id="statementNo" [(ngModel)]="c2isStatement.statementNo" name="statementNo">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="caseFileNo"> Case File No</label>
+                     <input type="text" class="form-control" id="caseFileNo" [(ngModel)]="c2isStatement.caseFileNo" name="caseFileNo">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="personInCharge"> LO-InCharged</label>
+                     <input type="text" class="form-control" id="personInCharge" [(ngModel)]="c2isStatement.personInCharge" name="personInCharge">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="offender"> Offender</label>
+                     <input type="text" class="form-control" id="offender" [(ngModel)]="c2isStatement.offender" name="offender">
+                 </div>
+            </td>
+            <td>
+                <div class="form-group">
+                <label for="stage"> Stage</label>
+                 <input type="text" class="form-control" id="stage" [(ngModel)]="c2isStatement.stage" name="stage" disabled="true">
+                </div>    
+            </td>
+            
+        </tr>
+        <tr>
+            <td colspan="5">
+             <button class="btn btn-success " type="submit">Update</button> &nbsp;
+             <button class="btn btn-success " (click)="updateAllTrackChange($event)">Update Track Change</button>
+             <button class="btn btn-success " type="submit">Proceed Clarification</button> &nbsp;
+             <button class="btn btn-success "(click)="digitalStatementPdf(c2isStatement.id)">Proceed Signing</button> &nbsp;
+            </td>
+        </tr>
+         <tr>
+            <td colspan="7">
+            </td>
+        </tr>
+    </table>
+
+
+
+<main>
+	<div class="message">
+		<div class="centered">
+			<h1>Statement Stage: Clarification</h1>
+		</div>
+	</div> 
+	<div class="centered">
+		<div class='row row-editor'>
+            <ckeditor [editor]="Editor" 
+            (ready)="onReady($event)" 
+            id="content" 
+            [config]="editorConfig"
+            name="data"
+            [(ngModel)]="c2isStatement.content"
+            [data]="data">
+            </ckeditor>
+             <div #sidebar class='sidebar'>
+            </div> 
+        </div>
+	</div>
+</main>
+<!--</div> -->
+</form>
+<br><br>
+<div class="col-md-10 h3" >List of Annex</div>
+<div class="col-md-10">
+    <table class="table table-striped">
+    <tbody>
+        <td>Statement Annexes:</td>
+        <td><input type="file" class="file-input"
+            (change)="onFileSelected($event)" #fileUpload></td>
+    </tbody>
+    </table>
+
+</div>
+
+<div class="col-md-10">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Annex</th>
+      <th>Annex No</th>
+      <th>File Name of Attachment</th>
+      <th>Annex Description</th>
+      <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let annexFile of annexFiles">
+            <td><input type="text" [(ngModel)]="annexFile.annex"  value={{annexFile.annex}} name="annex" /></td>
+            <td><input type="text"  [(ngModel)]="annexFile.annexNo"  value={{annexFile.annexNo}} name="annexNo"/></td>
+           <td> {{annexFile.fileName}}</td>
+           <td>
+            <!--<input type="text"
+            class="form-control" [(ngModel)]="annexFile.description" value={{annexFile.description}} name="description"/>
+            -->
+            <textarea  class="form-control" [(ngModel)]="annexFile.description"  value={{annexFile.description}} 
+            name="description" ></textarea>
+        </td>
+           <td>
+            <!-- Button to update -->
+            <button class="btn btn-danger" (click)="deleteAnnexFile(annexFile.id)"> Delete</button> &nbsp;
+                
+            <!-- Button to remove-->
+            <button class="btn btn-success" (click)="updateAnnexFile(annexFile)"> Update</button>
+            <!-- Button to Sign Signature-->
+            <button class="btn btn-success" (click)="addsignaturepanel(annexFile.id)">Add Signature</button>
+        </td>
+    </tbody>
+ </table>
+</div>
+
+
