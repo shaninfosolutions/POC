@@ -77,7 +77,7 @@ export class RevisionHisotryAdapterComponent implements AfterViewInit, OnDestroy
 	}
 
 	private readonly STORAGE_KEY = 'ckeditor-license-key';
-	private licenseKey = 'TXVTY3FqcVJ0aXdYbzdhQnFobG9uWUJtMlRnK1kvWWp2S1g4ZXNkZzRTUi9jaWMxaHRoL3FnNkprcHJhLU1qQXlNekE0TWpRPQ';
+	private licenseKey = 'Y29iKzVnd2phUy9DOFVsTDBMQ3VrRWU0Zkk5VWdwRDI0TnRyZlY1Wm1aRjRwUE1wb1EyZG82UlBEOUM0LU1qQXlNekV4TWpZPQ==';
 
  		
 

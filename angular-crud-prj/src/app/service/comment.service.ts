@@ -4,10 +4,15 @@ import { Observable, map } from 'rxjs';
 
 import { TrackChangeComment } from '../model/comment';
 import { BehaviorSubject } from 'rxjs';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
+import { DatePipe } from '@angular/common'
 
 
 interface ChangeComment{
-  
+    commentId:string,
+    content:string,
+    authorId:string,
+    createdAt:Date
 }
 
 @Injectable({
@@ -20,7 +25,7 @@ export class CommentService {
 
 
   private baseUrl = "http://localhost:8080/api/v1/comment";
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient:HttpClient,public datepipe: DatePipe) { }
 
 
   getTrackChangeComments():Observable<TrackChangeComment[]>
@@ -62,6 +67,47 @@ export class CommentService {
 
     //  return this.http.get(this.url2).pipe(map(countries => countries.map(country => country.name);
 
+  }
+
+  getChangeCommentListByThreadId(id: string):Observable<any>
+  {
+    let username='javainuse'
+    let password='password'
+    console.log("test call");
+    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
+    headers.set('Content-Type','application/json;charset=utf-8');
+    return this.httpClient.get<any>(this.baseUrl+ "/threadid/"+ id,{headers}).pipe(
+      map(response => {
+        console.log("line 76 in service : " +JSON.stringify(response));
+        let list: any[] = [];
+        for (const c of response.comments){
+          console.log("line 79 : testing comment "+ c.commentId)
+          console.log("line 79 : testing comment "+ c.content)
+          let obj={commentId:String,
+                    content:String,
+                    authorId:String,
+                    createdAt:new Date};
+          obj.commentId=c.commentId;
+          obj.content=c.content;
+          obj.authorId=c.authorId;
+          if(c.createdAt===null || c.createdAt===undefined ){
+            console.log("The CratedAt Date is null : line 93 ");
+          }else{
+          obj.createdAt=new Date(c.createdAt );
+          //console.log("Line 97 " + obj.createdAt.toDateString());
+
+         // let latest_date =this.datepipe.transform(obj.createdAt, 'yyyy-MM-dd HH:MM:');
+          //console.log("Line 97 " + latest_date);
+          }
+          list.push(obj);          
+        }
+       // console.log("Comments : "+JSON.stringify(comments));
+        return {
+          threadId:response.threadId,
+          comments:list
+        }
+      })
+    );
   }
 
   public createTrackChangeComment(trackChangeComment:TrackChangeComment) :Observable<TrackChangeComment> {

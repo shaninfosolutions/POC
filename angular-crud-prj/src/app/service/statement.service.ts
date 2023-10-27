@@ -77,6 +77,18 @@ export class StatementService {
     return this.httpClient.post<AnnexFile>(this.baseUrl_1+"/uploadFile", formData,{headers});
   }
 
+  public createStatementPdf(formData: FormData,filepath:string,recordingId:string) {
+      let username='javainuse'
+      let password='password'
+     // console.log("test call");
+      const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
+     
+      //const formData = new FormData();
+      formData.append('filepath',filepath );
+      formData.append('recordingId',recordingId);
+    return this.httpClient.post<AnnexFile>("http://localhost:8080/api/v1/statementpdf/uploadFile", formData,{headers});
+  }
+
   public updateAnnex(id:string,annex:string,annexNo:string,description:string) {
       let username='javainuse'
       let password='password'
@@ -89,6 +101,16 @@ export class StatementService {
       formData.append('annexNo',annexNo);
       formData.append('description',description);
     return this.httpClient.put<AnnexFile>(this.baseUrl_1, formData,{headers});
+  }
+
+  public generateSignAnnexPdf(id:string){
+    let username='javainuse'
+    let password='password'
+   // console.log("test call");
+    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
+    const formData = new FormData();
+      formData.append('id',id );
+      return this.httpClient.post<any>("http://localhost:8080/api/v1/annex/addsignature", formData,{headers});
   }
 
   public deleteAnnex(id:string){
@@ -121,6 +143,19 @@ export class StatementService {
     formData.append('witnessSignature',witnessSignature);
     formData.append('interpreterSignature',interpreterSignature);
   return this.httpClient.put<AnnexFile>("http://localhost:8080/api/v1/annex/signature", formData,{headers});
+}
+
+public createDigitalStatement(statementId:string,filePath:string,recordingId:string){
+  let username='javainuse'
+    let password='password'
+   // console.log("test call");
+    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
+    const formData = new FormData();
+    formData.append('statementId',statementId);
+    formData.append('filepath',filePath);
+    formData.append('recordingId',recordingId);
+    return this.httpClient.post<any>("http://localhost:8080/api/v1/digitalstatement/sign", formData,{headers})
+
 }
 
   
@@ -160,6 +195,47 @@ public deleteDigitalStatementPdfByid(id:string){
 
 }
 
+
+
+/*public downloadStatementPdfById(id:string):Observable<Blob>{
+  let username='javainuse'
+  let password='password'
+  const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) }); 
+  return this.httpClient.get<Blob>("http://localhost:8080/api/v1/downloadFile/statement/"+id,{headers});
+
+}*/
+
+
+downloadStatementPdfById(id:string): Observable<any>{
+  let username='javainuse'
+  let password='password'
+  const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) }); 
+  return this.httpClient.get('http://localhost:8080/api/v1/downloadFile/statement/'+id, {headers,responseType: 'blob'});
+}
+
+getStatementPdfFileById(id:string): Observable<any>{
+  let username='javainuse'
+  let password='password'
+  const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) }); 
+  return this.httpClient.get('http://localhost:8080/api/v1/downloadFile/statement/'+id, {headers,responseType: 'arraybuffer'});
+}
+
+
+
+downloadDigitalStatementPdfById(id:string): Observable<any>{
+  let username='javainuse'
+  let password='password'
+  const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) }); 
+  return this.httpClient.get('http://localhost:8080/api/v1/downloadFile/digitalstmt/'+id, {headers,responseType: 'blob'});
+}
+
+
+downloadAnnexSignPdfById(id:string): Observable<any>{
+  let username='javainuse'
+  let password='password'
+  const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) }); 
+  return this.httpClient.get('http://localhost:8080/api/v1/annex/download/'+id, {headers,responseType: 'blob'});
+}
 
  
 }

@@ -38,9 +38,10 @@
         <tr>
             <td colspan="5">
              <button class="btn btn-success " type="submit">Update</button> &nbsp;
-             <button class="btn btn-success " (click)="updateAllTrackChange($event)">Update Track Change</button>
              <button class="btn btn-success " type="submit">Proceed Clarification</button> &nbsp;
              <button class="btn btn-success "(click)="digitalStatementPdf(c2isStatement.id)">Proceed Signing</button> &nbsp;
+             <input type="file" class="file-input" 
+             (change)="uploadSatementPdfFile($event)" #fileUpload>
             </td>
         </tr>
          <tr>
@@ -50,7 +51,50 @@
     </table>
 
 
+    <main>
+        <!--
+        <div class="message">
+            <div class="centered">
+                <h1>CKEditor 5 </h1>
+            </div>
+        </div> -->
+        <div class="centered">
+            <div class='row row-editor editors-holder'>
+                <!-- The original editor !-->
+                <div class="editor-container" id="editor-container">
+                    <ckeditor class="editor-container" 
+                    id="content" 
+                    [editor]="Editor" 
+                    (ready)="onReady($event)" 
+                    [config]="editorConfig" 
+                    [(ngModel)]="c2isStatement.content"
+                    name="data"
+                    [data]="data"></ckeditor>
+                    <div class="sidebar sidebar-container" id="sidebar-container" #sidebar></div>
+                </div>
+    
+                <!-- Structure for the revision viewer editor !-->
+                <div id="revision-viewer-container">
+                    <div class="editor-container">
+                        <div id="revision-viewer-editor"></div>
+                        <div class="sidebar-container" id="revision-viewer-sidebar"></div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="row row-info">
+                See the editor data in the console.
+                <button class="get-data" (click)="showEditorDataInConsole($event)">Get editor data</button>
+            </div>
+            <div class="row row-info">
+                Your license key is stored in the local storage.
+                <button class="remove-license-key" (click)="resetLicenseKey()">Reset license key</button>
+            </div> -->
+        </div>
+    </main>
 
+
+<!--
 <main>
 	<div class="message">
 		<div class="centered">
@@ -72,6 +116,9 @@
         </div>
 	</div>
 </main>
+
+-->
+
 <!--</div> -->
 </form>
 <br><br>
@@ -100,7 +147,8 @@
     </thead>
     <tbody>
         <tr *ngFor="let annexFile of annexFiles">
-            <td><input type="text" [(ngModel)]="annexFile.annex"  value={{annexFile.annex}} name="annex" /></td>
+            <td><input type="text" [(ngModel)]="annexFile.annex"  value={{annexFile.annex}} name="annex" />
+            </td>
             <td><input type="text"  [(ngModel)]="annexFile.annexNo"  value={{annexFile.annexNo}} name="annexNo"/></td>
            <td> {{annexFile.fileName}}</td>
            <td>
@@ -118,6 +166,8 @@
             <button class="btn btn-success" (click)="updateAnnexFile(annexFile)"> Update</button>
             <!-- Button to Sign Signature-->
             <button class="btn btn-success" (click)="addsignaturepanel(annexFile.id)">Add Signature</button>
+            <button class="btn btn-success" (click)="generateSingPdf(annexFile.id)">PDF Signature Generation</button>
+            <button class="btn btn-success" (click)="downloadSignPdf(annexFile.id,annexFile.fileName)">Download</button>
         </td>
     </tbody>
  </table>

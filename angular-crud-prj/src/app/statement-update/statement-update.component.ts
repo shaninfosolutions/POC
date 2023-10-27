@@ -11,15 +11,14 @@ import { StatementService } from '../service/statement.service';
 import type { CommentsRepository } from '@ckeditor/ckeditor5-comments';
 import type { TrackChanges } from '@ckeditor/ckeditor5-track-changes';
 import { getTrackChangesAdapter} from './load-save-integration';
-import { getLoadSaveIntegration} from './load-save-integration';
 
 import { SuggestionService } from '../service/suggestion.service';
 import { CommentService } from '../service/comment.service';
 import { TrackChangeSuggestion } from '../model/suggestion';
 import {  map } from 'rxjs';
 import { TrackChangeComment } from '../model/comment';
-import SignaturePad from 'signature_pad';
 import { AnnexFile } from '../model/annex.js';
+import { saveAs } from 'file-saver';
 
 
 
@@ -63,18 +62,48 @@ export class StatementUpdateComponent implements OnInit,AfterViewInit, OnDestroy
   public get editorConfig() {
 		return {
 			extraPlugins: [
-				getLoadSaveIntegration( this.appData ,this.suggestionService,this.commentService),
+				
 				getTrackChangesAdapter(this.appData,this.suggestionService,this.commentService, this.route.snapshot.params['id'])
 			],
 			sidebar: {
 				container: this.sidebar
+			},
+			revisionHistory: {
+				editorContainer: document.querySelector( '#editor-container' ),
+				viewerContainer: document.querySelector( '#revision-viewer-container' ),
+				viewerEditorElement: document.querySelector( '#revision-viewer-editor' ),
+				viewerSidebarContainer: document.querySelector( '#revision-viewer-sidebar' )
+			},   
+			pagination: {
+				// Page width and height correspond to A4 format
+				pageWidth: '21cm',
+				pageHeight: '29.7cm',
+	
+				pageMargins: {
+					top: '20mm',
+					bottom: '20mm',
+					right: '12mm',
+					left: '12mm'
+				}
+			},
+			exportPdf: {
+				fileName:document.querySelector('#caseFileNo'),
+				dataCallback: ( editor ) => {
+					this.editor.data.get({showSuggestionHighlights:true});
+					return `
+						${ editor.getData() }
+						<div class="watermark">Draft</div>
+					`;
+
+					
+				},
 			},
 			licenseKey: this.licenseKey
 		};
 	}
 
 	private readonly STORAGE_KEY = 'ckeditor-license-key';
-	private licenseKey = 'eXAvVDJzYTZIVU9WdDZmT2pXQzZRMndGS3ZEdzFUcldvYStrbXpOQlpiaHRDdCtJZ2xHYlZCdERqek84LU1qQXlNekE1TWpJPQ==';
+	private licenseKey = 'Y29iKzVnd2phUy9DOFVsTDBMQ3VrRWU0Zkk5VWdwRDI0TnRyZlY1Wm1aRjRwUE1wb1EyZG82UlBEOUM0LU1qQXlNekV4TWpZPQ==';
 
 	private appData = {
 		// The ID of the current user.
@@ -193,7 +222,7 @@ export class StatementUpdateComponent implements OnInit,AfterViewInit, OnDestroy
 		this.getStatementById();
 
 		this.getAnnexByRecordingId();
-		console.log("Line 777 before calling " + this.c2isStatement )
+		//console.log("Line 777 before calling " + this.c2isStatement )
 
 		
 	}
@@ -208,7 +237,7 @@ export class StatementUpdateComponent implements OnInit,AfterViewInit, OnDestroy
 		//this.signPad = new SignaturePad(this.signaturePadElement.nativeElement);
   
 
-		console.log("Line 162 :: ngAfterViewInit")
+		//console.log("Line 162 :: ngAfterViewInit")
 
 	}
 
@@ -528,6 +557,28 @@ private async  getData() {
 
   //fileName = '';
 
+  public uploadSatementPdfFile(evt):void{
+	const file:File = evt.target.files[0];
+
+	if (file) {
+		const formData = new FormData();
+		formData.append("file", file);
+		console.log("recording id "+this.c2isStatement.id);
+		
+		this.statementService.createStatementPdf(formData,"Digital-Signature-Input",this.route.snapshot.params['id']).subscribe({
+			next: (data) => {
+				console.log("Created Successful"+JSON.stringify(data));
+				this.ngOnInit;
+				window.location.reload();
+			},
+			error:(e)=>{
+				console.log(e);
+			}
+		})
+	}
+
+  }
+
   public onFileSelected(evt):void{
 	const file:File = evt.target.files[0];
 
@@ -596,6 +647,43 @@ private async  getData() {
 	console.log("Update Digital Statement PDF to redirect : " + id);
 	this.router.navigate(['statementpdf', id]);
   }
+
+
+  public generateSingPdf(id:string){
+	console.log("Generate Sign PDF : " + id);
+
+	this.statementService.generateSignAnnexPdf(id).subscribe({
+		next: (data) => {
+			console.log("Updated Successful"+JSON.stringify(data));
+			//this.ngOnInit;
+			alert("Generate PDF Successfully, It is ready to download :"+data.fileName);
+			//window.location.reload();
+		},
+		error:(e)=>{
+			console.log(e);
+		}
+	})
+	
+	
+  }
+
+
+  public downloadSignPdf(id:string,fileName:string){
+	console.log("Download Annex Signed PDF file : " + id);
+   // this.statementService.downloadStatementPdfById(id).subscribe(data=>{
+	 
+	  this.statementService.downloadAnnexSignPdfById(id).subscribe((response:any) => {
+		let blob:any = new Blob([response], { type: 'application/pdf; charset=utf-8' });
+	   const url = window.URL.createObjectURL(blob);
+	   alert("The file name "+ fileName);
+		saveAs(blob, fileName);
+  
+	  }
+	),(error: any) => console.log('Error downloading the file'),
+	() => console.info('File downloaded successfully');
+  
+  }
+  
 
 
   public showEditorDataInConsole( evt ): void {

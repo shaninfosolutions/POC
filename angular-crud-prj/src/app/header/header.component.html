@@ -17,6 +17,10 @@
      <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/viewrevision" class="nav-link">View Revision</a></li>
      <!--<li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/annexfileaddsignature" class="nav-link">Annex Add Signature</a></li>
      -->
+     <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/pdfviewer" class="nav-link">PDF Editor</a></li>
+     <!--<li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/pdf-pspdf-viewer" class="nav-link">PS-PDFKit Editor</a></li> -->
+     
+
      <li><a *ngIf="!loginService.isUserLoggedIn()" routerLink="/login" class="nav-link">Login</a></li>
      <li><a *ngIf="loginService.isUserLoggedIn()" routerLink="/logout" class="nav-link">LogOut</a></li>
     </ul>

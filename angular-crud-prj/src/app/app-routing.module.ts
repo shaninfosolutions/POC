@@ -16,6 +16,8 @@ import { RevisionHistoryComponent } from './revision-history/revision-history.co
 import { AnnexComponent } from './annex/annex.component';
 import { AnnexSignaturePanelComponent } from './annex-signature-panel/annex-signature-panel.component';
 import { DigitalStatementComponent } from './digital-statement/digital-statement.component';
+import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
+import { PspdfkitViewerComponent } from './pspdfkit-viewer/pspdfkit-viewer.component';
 
 const routes: Routes = [
   { path: '', component: C2isuserComponent,canActivate:[AuthGaurdService] },
@@ -34,6 +36,9 @@ const routes: Routes = [
   { path: 'update-revision/:id', component: RevisionHisotryAdapterComponent,canActivate:[AuthGaurdService]},
   { path: 'annexfileaddsignature/:id', component: AnnexSignaturePanelComponent,canActivate:[AuthGaurdService]},
   { path: 'statementpdf/:id', component: DigitalStatementComponent,canActivate:[AuthGaurdService]},
+  { path: 'pdfviewer', component: PdfViewerComponent,canActivate:[AuthGaurdService]},
+  { path: 'pdf-pspdf-viewer/:id', component: PspdfkitViewerComponent,canActivate:[AuthGaurdService]},
+  
 ];
 
 @NgModule({

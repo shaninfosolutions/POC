@@ -25,6 +25,10 @@ import { RevisionHistoryComponent } from './revision-history/revision-history.co
 import { AnnexComponent } from './annex/annex.component';
 import { AnnexSignaturePanelComponent } from './annex-signature-panel/annex-signature-panel.component';
 import { DigitalStatementComponent } from './digital-statement/digital-statement.component';
+import { DatePipe } from '@angular/common';
+import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { PspdfkitViewerComponent } from './pspdfkit-viewer/pspdfkit-viewer.component';
 
 
 
@@ -49,18 +53,22 @@ import { DigitalStatementComponent } from './digital-statement/digital-statement
     AnnexComponent,
     AnnexSignaturePanelComponent,
     DigitalStatementComponent,
+    PdfViewerComponent,
+    PspdfkitViewerComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    CKEditorModule
+    CKEditorModule,
+    DatePipe,
+    NgxExtendedPdfViewerModule
    
   ],
   providers: [{  
     provide:HTTP_INTERCEPTORS, useClass:BasicAuthInterceptorService, multi:true 
-  }],
+  },DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

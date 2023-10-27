@@ -16,8 +16,8 @@
             <td>
                 <button class="btn btn-danger" (click)="deleteStatementPdf(statementPdf.id)"> Delete</button> &nbsp;
                 <button class="btn btn-success" (click)="signStatement(statementPdf.id)"> Sign PDF</button> &nbsp;
-                <button class="btn btn-success" (click)="createDigitalStatement(statementPdf.id)"> Create Digital Statement</button> &nbsp;
-                <button class="btn btn-success" (click)="downloadStatementPdf(statementPdf.id)"> Download</button>
+                <button class="btn btn-success" (click)="createDigitalStatement(statementPdf.id,statementPdf.filePath,statementPdf.recordingId)"> Create Digital Statement</button> &nbsp;
+                <button class="btn btn-success" (click)="downloadStatementPdf(statementPdf.id,statementPdf.fileName)"> Download</button>
             </td>
             </tr>
             
@@ -43,7 +43,7 @@
            <td>{{digitalStatementPdf.fileVerNo}}</td>
             <td>
                 <button class="btn btn-danger" (click)="deleteDigitalStatement(digitalStatementPdf.id)"> Delete</button> &nbsp;
-                 <button class="btn btn-success" (click)="downloadDigitalPdf(digitalStatementPdf.id)"> Download</button>
+                 <button class="btn btn-success" (click)="downloadDigitalPdf(digitalStatementPdf.id,digitalStatementPdf.fileName)"> Download</button>
             </td>
             </tr>
             

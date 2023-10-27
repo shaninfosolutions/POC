@@ -27,7 +27,7 @@ export class SuggestionService {
   
   private baseUrl = "http://localhost:8080/api/v1/trackchange";
   constructor(private httpClient:HttpClient) {
-    this.fetchData()
+    //this.fetchData()
    }
 
  
@@ -84,17 +84,28 @@ export class SuggestionService {
     headers.set('Content-Type','application/json;charset=utf-8');
     return this.httpClient.get<any>(this.baseUrl+ "/threadid/"+ threadId,{headers}).pipe(
       map(response => {
+
+        let createDate:any;
+        if(response.createdAt===null || response.createdAt===undefined){
+          console.log("The creation Date is null");
+          createDate=null;
+        }else{
+          createDate=new Date(response.createdAt);
+        }
+
         return {
           id: response.id,
           type: response.type,
           authorId: response.authorId,
           hasComments: response.hasComments,
-          createdAt: new Date( response.createdAt ),
+          createdAt: createDate,
           data: response.data
         }
       })
     );
   }
+
+  
 
   getTrackChangeMap(id: number):Observable<any>
   {
@@ -109,6 +120,7 @@ export class SuggestionService {
     )
   }
 
+  /*
   fetchData(id?:number) {
     let username='javainuse'
     let password='password'
@@ -120,7 +132,7 @@ export class SuggestionService {
       this.dataSubject.next(data);
     });
 
-  }
+  }*/
   // map((data) => response as resp[] || [])
   
 

@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatementService } from '../service/statement.service';
 import { StatementPdf,DigitalStatementPdf } from '../model/statementpdf';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-digital-statement',
   templateUrl: './digital-statement.component.html',
@@ -56,14 +57,49 @@ public deleteStatementPdf(id:string): void {
   };
 
 
-signStatement(id:string){
-
-}
-createDigitalStatement(id:string){
-
+public signStatement(id:string){
+  console.log("Redirect to PDF Viewer file : " + id);
+	this.router.navigate(['pdf-pspdf-viewer', id]);
 }
 
-downloadStatementPdf(id:string){
+createDigitalStatement(id:string,filePath:string,recordingId:string){
+  console.log("Sign the PDF File: "+id);
+  this.statementService.createDigitalStatement(id,filePath,recordingId).subscribe(
+    data=>{
+      alert("Sign PDF Statement Successfully:" + JSON.stringify(data));
+      this.ngOnInit;
+		  window.location.reload();
+  })
+
+}
+downloadStatementPdf(id:string,filename:string){
+
+  console.log("Download Statement PDF file : " + id);
+ // this.statementService.downloadStatementPdfById(id).subscribe(data=>{
+   
+    this.statementService.downloadStatementPdfById(id).subscribe((response:any) => {
+      let blob:any = new Blob([response], { type: 'application/pdf; charset=utf-8' });
+			const url = window.URL.createObjectURL(blob);
+      saveAs(blob, filename);
+
+    }
+  ),(error: any) => console.log('Error downloading the file'),
+  () => console.info('File downloaded successfully');
+
+}
+
+downloadDigitalPdf(id:string,filename:string){
+  console.log("Download Digital Statement PDF file : " + id);
+ // this.statementService.downloadStatementPdfById(id).subscribe(data=>{
+   
+    this.statementService.downloadDigitalStatementPdfById(id).subscribe((response:any) => {
+      let blob:any = new Blob([response], { type: 'application/pdf; charset=utf-8' });
+			const url = window.URL.createObjectURL(blob);
+      saveAs(blob, filename);
+
+    }
+  ),(error: any) => console.log('Error downloading the file'),
+  () => console.info('File downloaded successfully');
 
 }
 
@@ -80,8 +116,6 @@ deleteDigitalStatement(id:string){
 
 }
 
-downloadDigitalPdf(id:string){
 
-}
 
 }

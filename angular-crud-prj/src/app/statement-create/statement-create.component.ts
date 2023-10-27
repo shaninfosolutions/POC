@@ -69,7 +69,7 @@ export class StatementCreateComponent implements OnInit,AfterViewInit, OnDestroy
 
 
 	private readonly STORAGE_KEY = 'ckeditor-license-key';
-	private licenseKey = 'eXAvVDJzYTZIVU9WdDZmT2pXQzZRMndGS3ZEdzFUcldvYStrbXpOQlpiaHRDdCtJZ2xHYlZCdERqek84LU1qQXlNekE1TWpJPQ==';
+	private licenseKey = 'Y29iKzVnd2phUy9DOFVsTDBMQ3VrRWU0Zkk5VWdwRDI0TnRyZlY1Wm1aRjRwUE1wb1EyZG82UlBEOUM0LU1qQXlNekV4TWpZPQ==';
 
 	
 

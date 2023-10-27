@@ -86,8 +86,8 @@ export class EditorTrackChangeComponent implements AfterViewInit, OnDestroy {
 	}
 
 	private readonly STORAGE_KEY = 'ckeditor-license-key';
-	private licenseKey = 'TXVTY3FqcVJ0aXdYbzdhQnFobG9uWUJtMlRnK1kvWWp2S1g4ZXNkZzRTUi9jaWMxaHRoL3FnNkprcHJhLU1qQXlNekE0TWpRPQ==';
-
+	private licenseKey = 'Y29iKzVnd2phUy9DOFVsTDBMQ3VrRWU0Zkk5VWdwRDI0TnRyZlY1Wm1aRjRwUE1wb1EyZG82UlBEOUM0LU1qQXlNekV4TWpZPQ==';
+	private date="2023-09-15T07:33:27.801Z";
 	private appData = {
 		// The ID of the current user.
 		userId: 'user-1',
@@ -106,33 +106,34 @@ export class EditorTrackChangeComponent implements AfterViewInit, OnDestroy {
 			}
 		],
 		// Suggestion threads data.
+		
 		suggestions: [
 			{
 				id: 'suggestion-1',
 				type: 'insertion',
 				authorId: 'user-2',
-				createdAt: new Date( 2019, 1, 13, 11, 20, 48 ),
+				createdAt: new Date( this.date),
 				hasComments: true
 			},
 			{
 				id: 'suggestion-2',
 				type: 'deletion',
 				authorId: 'user-1',
-				createdAt: new Date( 2019, 1, 14, 12, 7, 20 ),
+				createdAt: new Date( this.date ),
 				hasComments: false
 			},
 			{
 				id: 'suggestion-3',
 				type: 'insertion',
 				authorId: 'user-1',
-				createdAt: new Date( 2019, 1, 14, 12, 7, 20 ),
+				createdAt: new Date( this.date ),
 				hasComments: false
 			},
 			{
 				id: 'suggestion-4',
 				type: 'deletion',
 				authorId: 'user-1',
-				createdAt: new Date( 2019, 1, 15, 8, 44, 1 ),
+				createdAt: new Date( this.date ),
 				hasComments: true
 			},
 			{
@@ -140,7 +141,7 @@ export class EditorTrackChangeComponent implements AfterViewInit, OnDestroy {
 				type: 'formatInline:886cqig6g8rf',
 				authorId: 'user-2',
 				hasComments: false,
-				createdAt: new Date( 2019, 2, 8, 10, 2, 7 ),
+				createdAt: new Date( this.date  ),
 				data: {
 					commandName: 'bold',
 					commandParams: [ { forceValue: true } ]
@@ -151,7 +152,7 @@ export class EditorTrackChangeComponent implements AfterViewInit, OnDestroy {
 				type: 'formatBlock:698dn3otqzd6',
 				authorId: 'user-2',
 				hasComments: false,
-				createdAt: new Date( 2019, 2, 8, 10, 2, 10 ),
+				createdAt: new Date( this.date  ),
 				data: {
 					commandName: 'heading',
 					commandParams: [ { value: 'heading2' } ],
@@ -169,7 +170,7 @@ export class EditorTrackChangeComponent implements AfterViewInit, OnDestroy {
 						commentId: 'comment-1',
 						content: 'Sounds good.',
 						authorId: 'user-1',
-						createdAt: new Date( 2019, 1, 13, 11, 32, 57 )
+						createdAt: new Date( this.date  )
 					}
 				]
 			},
@@ -180,13 +181,13 @@ export class EditorTrackChangeComponent implements AfterViewInit, OnDestroy {
 						commentId: 'comment-2',
 						content: 'I think it\'s not relevant.',
 						authorId: 'user-2',
-						createdAt: new Date( 2019, 1, 15, 9, 3, 1 )
+						createdAt: new Date( this.date  )
 					},
 					{
 						commentId: 'comment-3',
 						content: 'You are right. Thanks.',
 						authorId: 'user-1',
-						createdAt: new Date( 2019, 1, 15, 9, 28, 1 )
+						createdAt: new Date( this.date  )
 					}
 				]
 			}
