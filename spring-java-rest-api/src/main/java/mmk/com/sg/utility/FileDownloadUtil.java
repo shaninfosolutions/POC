@@ -1,5 +1,6 @@
 package mmk.com.sg.utility;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,5 +27,21 @@ public class FileDownloadUtil {
          
         return null;
     }
-
+    
+    public Resource getFileAsResourceByFileName(String filename,String filePath){
+   
+    	try {
+    		return new UrlResource(Paths.get(filePath)
+					.resolve(filename)
+					.toUri());
+    		
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return null;
+    	
+    }
+    
+   
 }

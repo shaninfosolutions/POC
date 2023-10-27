@@ -116,6 +116,17 @@ public class StatementChgComServiceImpl implements StatementChgComService{
 		
 	}
 
+	@Override
+	public String findByThreadId(String id) {
+		
+		StatementChgComment obj=repository.findByCommentThreadId(id);
+		
+		if(obj!=null) {
+			return obj.getCommentThread();
+		}
+		return null;
+	}
+
 	/*@Override
 	public void updateStatementChgComment(StatementChgComment comment, String threadId, String commentId) {
 		if(commentId==null && commentId.isBlank()) {

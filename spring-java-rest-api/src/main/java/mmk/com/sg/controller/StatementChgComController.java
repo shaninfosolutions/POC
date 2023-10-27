@@ -86,5 +86,12 @@ public class StatementChgComController {
     {
         return this.serviceImpl.updateStatementChgCommentId(comment, threadid, comment.getCommentId());
     }
+    
+    @GetMapping(value = "/comment/threadid/{id}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public String findByThreadId(@PathVariable String id) {
+    	return this.serviceImpl.findByThreadId(id);
+	}
+    
 
 }

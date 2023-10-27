@@ -1,7 +1,9 @@
 package mmk.com.sg.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletResponse;
 import mmk.com.sg.utility.FileDownloadUtil;
 
 @RestController
@@ -41,4 +45,24 @@ public class FileDownloadController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
                 .body(resource);       
     }
+    
+   /* @RequestMapping(path = "/downloadFile/{fileId}", 
+    		method = RequestMethod.GET, 
+    		produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> downloadFile(@PathVariable(value="fileId") String fileId,HttpServletResponse response) throws Exception {
+    	 FileDownloadUtil downloadUtil = new FileDownloadUtil();
+    	Resource resource=downloadUtil.getFileAsResourceByFileName(fileId, fileId);
+    	
+    	  if (resource == null) {
+              return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
+          }
+    	
+    	InputStream downloadContent=resource.getInputStream();
+    	
+    	
+        InputStream yourInputStream = 
+        IOUtils.copy(yourInputStream, response.getOutputStream());
+        response.flushBuffer();
+        return ResponseEntity.ok().build();
+    }*/
 }

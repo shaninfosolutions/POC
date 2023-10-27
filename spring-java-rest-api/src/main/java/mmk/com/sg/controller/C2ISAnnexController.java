@@ -1,11 +1,18 @@
 package mmk.com.sg.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,16 +28,32 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aspose.pdf.BlendMode;
+import com.aspose.pdf.CompositingParameters;
+import com.aspose.pdf.facades.PdfFileMend;
+
 import mmk.com.sg.data.entity.AnnexFile;
+import mmk.com.sg.data.entity.DigitalStatementPdf;
 import mmk.com.sg.data.entity.Statement;
 import mmk.com.sg.dto.model.FileUploadResponse;
+import mmk.com.sg.dto.model.PDFFileSignature;
 import mmk.com.sg.service.AnnexServiceImpl;
+import mmk.com.sg.utility.FileDownloadUtil;
 import mmk.com.sg.utility.FileUploadUtil;
+import org.apache.commons.io.IOUtils;
+import com.aspose.pdf.Document;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("api/v1")
 public class C2ISAnnexController {
+	
+	
+	@Value("${annex.pdf.file.upload}")
+	private String annexPdfFileUpload;
+	
+	@Value("${annex.pdf.file.signed}")
+	private String annexPdfFileSigned;
 	
 	
 	@Autowired
@@ -107,6 +130,92 @@ public class C2ISAnnexController {
         response.setRecordingId(saveAnnexFile.getRecordingId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+	@PostMapping("/annex/addsignature")
+    public ResponseEntity<PDFFileSignature> addSignatureFileAnnex(
+    		@RequestParam("id") Long id) throws IOException{
+		
+		AnnexFile annexFile=serviceImpl.findById(id);
+		if(annexFile!=null) {
+			//Call the Aspose API to add the signature 
+			String officierBase64ImgString=annexFile.getOfficierSignature().replace("data:image/png;base64,", "");
+			
+			//InputStream officerInputStream = IOUtils.toInputStream(officierBase64ImgString, "UTF-8");
+			byte[] officierimageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(officierBase64ImgString);
+			InputStream officerInputStream = new ByteArrayInputStream(officierimageBytes);
+			
+			String witnessBase64ImgString=annexFile.getWitnessSignature().replace("data:image/png;base64,", "");
+			byte[] witnessimageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(witnessBase64ImgString);
+			InputStream witnessInputStream=new ByteArrayInputStream(witnessimageBytes);
+			
+			String interrupterBased64ImgString=annexFile.getInterpreterSignature().replace("data:image/png;base64,", "");
+			byte[] interrupterimageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(interrupterBased64ImgString);
+			InputStream interrupterInputStream=new ByteArrayInputStream(interrupterimageBytes);
+			
+			
+			 PdfFileMend mender = new PdfFileMend();
+			 
+			 Document pdfDocument = new Document(annexPdfFileUpload+ annexFile.getFileName());
+			 int pageCount=pdfDocument.getPages().size();
+			 pdfDocument.close();
+			 // Create PdfFileMend object to add text
+		     mender.bindPdf( annexPdfFileUpload+ annexFile.getFileName());
+		     
+		     CompositingParameters compositingParameters = new CompositingParameters(BlendMode.Multiply);
+		        int pageNum = pageCount;
+		        int lowerLeftX = 10;
+		        int lowerLeftY = 30;
+		        int upperRightX = 300;
+		        int upperRightY = 50;
+		        
+		     // mender.addImage(_dataSignatureImage + "Base64_to_Image.png", 1, 10, 10, 300, 50,compositingParameters);
+		    mender.addImage(officerInputStream,
+				        		pageNum, 
+				        		lowerLeftX, 
+				        		lowerLeftY,
+				        		upperRightX,
+				        		upperRightY, compositingParameters); 
+		    
+		     pageNum = pageCount;
+	         lowerLeftX = 10;
+	         lowerLeftY = 30;
+	         upperRightX = 600;
+	         upperRightY = 50;
+	         
+	         // mender.addImage(_dataSignatureImage + "Base64_to_Image.png", 1, 10, 10, 300, 50,compositingParameters);
+			 mender.addImage(witnessInputStream,
+					        		pageNum, 
+					        		lowerLeftX, 
+					        		lowerLeftY,
+					        		upperRightX,
+					        		upperRightY, compositingParameters); 
+			 
+			 pageNum = pageCount;
+	         lowerLeftX = 10;
+	         lowerLeftY = 30;
+	         upperRightX = 900;
+	         upperRightY = 50;
+	         
+	      // mender.addImage(_dataSignatureImage + "Base64_to_Image.png", 1, 10, 10, 300, 50,compositingParameters);
+			 mender.addImage(interrupterInputStream,
+					        		pageNum, 
+					        		lowerLeftX, 
+					        		lowerLeftY,
+					        		upperRightX,
+					        		upperRightY, compositingParameters); 
+			 mender.save(annexPdfFileSigned + annexFile.getFileName());
+			// Close PdfFileMend object
+		     mender.close();
+		}
+
+		PDFFileSignature response=new PDFFileSignature();
+		response.setId(annexFile.getId());
+		response.setAnnex(annexFile.getAnnex());
+		response.setAnnexNo(annexFile.getAnnexNo());
+		response.setRecordingId(annexFile.getRecordingId());
+		response.setFileName(annexFile.getFileName());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 	
 	// Update operation
     @PutMapping("/annex")
@@ -131,7 +240,36 @@ public class C2ISAnnexController {
             @RequestParam("interpreterSignature") String interpreterSignature
             )
     {
-        return this.serviceImpl.updateSignature(officialSignature, witnessSignature,interpreterSignature,id) ;
+    	return this.serviceImpl.updateSignature(officialSignature, witnessSignature,interpreterSignature,id) ;
+    
+    }
+    
+    
+    @GetMapping("/annex/download/{id}")
+    public ResponseEntity<?> downloadFile(@PathVariable("id") Long annexId)  {
+    	FileDownloadUtil downloadUtil = new FileDownloadUtil();
+        
+    	AnnexFile annexFile=serviceImpl.findById(annexId);
+    	
+    	if(annexFile==null) {
+    		 return new ResponseEntity<>("File not found in DB, please try again", HttpStatus.NOT_FOUND);
+    	}
+    	
+        Resource resource = null;
+        resource = downloadUtil.getFileAsResourceByFileName(annexFile.getFileName(),
+        		annexPdfFileSigned);
+
+        if (resource == null) {
+            return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
+        }
+         
+        String contentType = "application/octet-stream";
+        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
+         
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                .body(resource);    
     }
 	
 	// Delete operation
@@ -142,5 +280,10 @@ public class C2ISAnnexController {
     	serviceImpl.deleteAnnexFileById(id);
         return "Deleted Successfully";
     }
+    
+    
+    
+    
+    
 
 }

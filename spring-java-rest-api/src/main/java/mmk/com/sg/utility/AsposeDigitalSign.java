@@ -1,11 +1,15 @@
 package mmk.com.sg.utility;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import org.springframework.beans.factory.annotation.Value;
 
 import com.aspose.pdf.Document;
 import com.aspose.pdf.PKCS7;
 import com.aspose.pdf.TimestampSettings;
 import com.aspose.pdf.facades.PdfFileSignature;
+import com.aspose.pdf.Signature;
 
 
 public class AsposeDigitalSign {
@@ -40,13 +44,32 @@ public class AsposeDigitalSign {
 
 	        PdfFileSignature signature = new PdfFileSignature(document);
 
-	        PKCS7 pkcs = new PKCS7("C:\\mytutorial\\pdfsample\\TSA\\test1day_expired\\cert.pfx", "password1"); // Use PKCS7/PKCS7Detached
+	        PKCS7 pkcs = new PKCS7("C:\\mytutorial\\pdfsample\\TSA\\test\\cert.pfx", "password1"); // Use PKCS7/PKCS7Detached
 	        //com.aspose.pdf.DocMDPSignature docMdpSignature = new com.aspose.pdf.DocMDPSignature(pkcs, 
 	        								//com.aspose.pdf.DocMDPAccessPermissions.FillingInForms);
 	        pkcs.setUseLtv(false);
-	       
-	        signature.sign(1, "C2IS Digital Signature POC", "Singapore Custom", "Singapore",true, new java.awt.Rectangle(10, 10, 300, 50), pkcs);
 	        
+	        try {
+				pkcs.setImage(new FileInputStream("simpleLogo.png"));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	       
+	        
+	        //Signature s=new Signature("C:\\mytutorial\\pdfsample\\TSA\\test\\cert.pfx", "password1");
+	       //void com.aspose.pdf.Signature.setUseLtv(boolean value)
+	        
+	        if(signature.isLtvEnabled()) {
+	        	System.out.println("The LTV is enable");
+	        }
+	        
+	        //signature.sign(0, fileName, inFile, outFile, false, null, pkcs);
+	     
+	        
+	        signature.sign(1, "C2IS Digital Signature POC", "Singapore Custom", "Singapore",true, new java.awt.Rectangle(10, 10, 300, 50), pkcs);
+	       
 	        signature.save(outFile);
 	        
 	        String outFileName= "Signed "+version+"_"+fileName;
@@ -61,7 +84,7 @@ public class AsposeDigitalSign {
 	        Document document = new Document(inFile);
 	        PdfFileSignature signature = new PdfFileSignature(document);
 	        System.out.print("Begin");
-	        PKCS7 pkcs = new PKCS7("C:\\mytutorial\\pdfsample\\TSA\\test1day_expired\\cert.pfx", "password1");
+	        PKCS7 pkcs = new PKCS7("C:\\mytutorial\\pdfsample\\TSA\\test\\cert.pfx", "password1");
 	        com.aspose.pdf.DocMDPSignature docMdpSignature = new com.aspose.pdf.DocMDPSignature(pkcs, 
 	        						com.aspose.pdf.DocMDPAccessPermissions.FillingInForms);
 

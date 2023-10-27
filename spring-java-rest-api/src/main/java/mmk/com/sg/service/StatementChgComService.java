@@ -26,4 +26,5 @@ public interface StatementChgComService {
 		
 		void updateStatementChgComment(StatementChgComment comment, Long recordingId,String commentThreadId);
 			    
+		String findByThreadId(String id);
 }

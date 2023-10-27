@@ -16,4 +16,5 @@ public interface StatementChgComRepository extends CrudRepository<StatementChgCo
 
 	
 	StatementChgComment findByCommentThreadIdAndCommentId(String commentThreadId,String commentId);
+	
 }
